@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RhodeQuant Labs | Quantitative Analytics for Community Banks</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --navy-light: #1a3358;
+    --teal: #00c9a7;
+    --teal-dim: #00967d;
+    --gold: #e8b84b;
+    --cream: #f5f0e8;
+    --cream-dim: #e8e2d6;
+    --text: #c8d3e8;
+    --text-dim: #7a8aaa;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* GRID LINES BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,201,167,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,201,167,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,201,167,0.1);
+  }
+
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--teal);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--teal); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--teal);
+    color: var(--teal) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    transition: background 0.2s, color 0.2s !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--teal) !important;
+    color: var(--navy) !important;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 5rem;
+    overflow: hidden;
+  }
+
+  /* Decorative circle */
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,201,167,0.08);
+    box-shadow: 0 0 120px rgba(0,201,167,0.05) inset;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--teal);
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.6rem, 4.5vw, 4rem);
+    line-height: 1.12;
+    color: var(--cream);
+    margin-bottom: 1.8rem;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-body {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--teal);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--teal-dim);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    color: var(--cream);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--teal); }
+  .btn-secondary::after { content: '→'; }
+
+  /* HERO RIGHT — STATS CARD */
+  .hero-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(0,201,167,0.12);
+    border-radius: 4px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+  }
+
+  .card-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--teal);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  .alco-demo {
+    margin-bottom: 1.5rem;
+  }
+
+  .alco-demo h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .alco-demo p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+
+  .metric-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .metric {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+    padding: 0.8rem;
+  }
+
+  .metric-label {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .metric-value {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .metric-value.up { color: var(--teal); }
+  .metric-value.warn { color: var(--gold); }
+
+  .btn-alco {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: rgba(0,201,167,0.08);
+    border: 1px solid rgba(0,201,167,0.25);
+    color: var(--teal);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.75rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-alco:hover { background: rgba(0,201,167,0.15); }
+
+  /* SECTION COMMON */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 4rem;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--teal);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  /* DIFFERENTIATOR BAR */
+  .diff-bar {
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(0,201,167,0.08);
+    border-bottom: 1px solid rgba(0,201,167,0.08);
+  }
+
+  .diff-bar .section-inner {
+    padding: 3rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .diff-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .diff-icon {
+    font-size: 1.3rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+  }
+
+  .diff-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .diff-text {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .service-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 3px;
+    padding: 2rem;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .service-card:hover {
+    border-color: rgba(0,201,167,0.25);
+    transform: translateY(-3px);
+  }
+
+  .service-card.featured {
+    border-color: rgba(0,201,167,0.3);
+    background: linear-gradient(135deg, var(--navy-mid), rgba(0,201,167,0.04));
+  }
+
+  .service-card.featured::after {
+    content: 'Live Tool';
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0,201,167,0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .service-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    opacity: 0.5;
+    margin-bottom: 1rem;
+  }
+
+  .service-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 0.7rem;
+  }
+
+  .service-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ETHOS / ABOUT */
+  .ethos-section {
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(0,201,167,0.06);
+  }
+
+  .ethos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .ethos-text p {
+    font-size: 1rem;
+    color: var(--text-dim);
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+  }
+
+  .principles {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+
+  .principle {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.2rem;
+    background: rgba(0,0,0,0.2);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 3px 3px 0;
+  }
+
+  .principle-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--teal);
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+  }
+
+  .principle-title {
+    font-weight: 600;
+    color: var(--cream);
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .principle-text {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .cta-inner h2 {
+    margin-bottom: 1.2rem;
+  }
+
+  .cta-inner p {
+    color: var(--text-dim);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem;
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  .footer-logo span { color: var(--teal); }
+
+  .footer-text {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    opacity: 0.5;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-label   { animation: fadeUp 0.6s ease both; animation-delay: 0.1s; }
+  h1            { animation: fadeUp 0.6s ease both; animation-delay: 0.2s; }
+  .hero-body    { animation: fadeUp 0.6s ease both; animation-delay: 0.35s; }
+  .hero-actions { animation: fadeUp 0.6s ease both; animation-delay: 0.45s; }
+  .hero-card    { animation: fadeUp 0.7s ease both; animation-delay: 0.3s; }
+
+  /* Teal cursor dot */
+  .cursor-dot {
+    width: 6px; height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    mix-blend-mode: screen;
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Rhode<span>Quant</span> Labs</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="https://alco-commentary.rhodequantlabs.com" target="_blank">ALCO Tool</a></li>
+    <li><a href="#contact" class="nav-cta">Get In Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-label">Quantitative Analytics</div>
+      <h1>Data-driven decisions for <em>community banks</em></h1>
+      <p class="hero-body">
+        RhodeQuant Labs delivers practical, scalable analytics — from financial risk modeling and forecasting to customer analytics and real-time dashboards. Built specifically for the pressures and realities of community banking.
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">Explore Services</a>
+        <a href="#contact" class="btn-secondary">Talk to us</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <div class="card-tag">// Featured Tool</div>
+      <div class="alco-demo">
+        <h3>ALCO Commentary Generator</h3>
+        <p>Enter balance sheet metrics and instantly produce board-ready ALCO commentary. No manual drafting — just accurate, professional output.</p>
+        <div class="metric-row">
+          <div class="metric">
+            <div class="metric-label">Loan Growth</div>
+            <div class="metric-value up">+4.2%</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Deposit Beta</div>
+            <div class="metric-value warn">0.38</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Liquidity Ratio</div>
+            <div class="metric-value">18.5%</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">NIM</div>
+            <div class="metric-value up">3.24%</div>
+          </div>
+        </div>
+      </div>
+      <a href="https://alco-commentary.rhodequantlabs.com" target="_blank" class="btn-alco">Try the Live Tool →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATOR BAR -->
+<div class="diff-bar">
+  <div class="section-inner">
+    <div class="diff-item">
+      <div class="diff-icon">⚡</div>
+      <div>
+        <div class="diff-title">Practical, Not Academic</div>
+        <div class="diff-text">We deliver solutions your team can actually use — no jargon, no bloat, no vendor lock-in.</div>
+      </div>
+    </div>
+    <div class="diff-item">
+      <div class="diff-icon">🏦</div>
+      <div>
+        <div class="diff-title">Built for Community Banks</div>
+        <div class="diff-text">We understand your resource constraints, regulatory environment, and operational reality.</div>
+      </div>
+    </div>
+    <div class="diff-item">
+      <div class="diff-icon">🤝</div>
+      <div>
+        <div class="diff-title">Partners, Not Vendors</div>
+        <div class="diff-text">We work side-by-side with your team to build solutions that integrate into your workflows.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-label">// What We Do</div>
+    <h2>Analytics built around your needs</h2>
+    <div class="services-grid">
+      <div class="service-card featured">
+        <div class="service-num">01</div>
+        <div class="service-title">ALCO Commentary Generator</div>
+        <div class="service-desc">AI-powered tool that turns your balance sheet metrics into professional, board-ready ALCO reports in seconds. Available right now — try it free.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-title">Financial & Risk Modeling</div>
+        <div class="service-desc">Custom forecasting and valuation models for revenue, costs, interest rates, cash flows — tailored to your data and institution.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-title">Forecasting & Scenario Planning</div>
+        <div class="service-desc">Anticipate change with advanced forecasting, what-if scenarios, and stress testing across financial and operational dimensions.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-title">Customer & Market Analytics</div>
+        <div class="service-desc">Understand customer behavior, pricing dynamics, and demand trends with analytics that drive growth and retention.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-title">Operational Dashboards</div>
+        <div class="service-desc">Turn raw data into actionable insights with dashboards, KPIs, and automated reporting that keeps your teams aligned.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-title">Data Engineering & Custom Models</div>
+        <div class="service-desc">From data cleaning and pipeline setup to machine learning and econometrics — end-to-end data solutions built for your environment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ETHOS / ABOUT -->
+<section class="ethos-section" id="about">
+  <div class="section-inner">
+    <div class="ethos-grid">
+      <div class="ethos-text">
+        <div class="section-label">// Our Ethos</div>
+        <h2>Data should serve people, not overwhelm them</h2>
+        <p>At RhodeQuant Labs, we believe analytics are only valuable if they create clarity, confidence, and momentum for your organization.</p>
+        <p>While our roots are in finance and risk analytics, we bring fresh perspectives across industries — every organization has data challenges, and we're here to help solve them.</p>
+      </div>
+      <div class="principles">
+        <div class="principle">
+          <div class="principle-num">01</div>
+          <div>
+            <div class="principle-title">Clarity Over Complexity</div>
+            <div class="principle-text">We strip away jargon, turning complex data into insights that are easy to understand and act upon.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="principle-num">02</div>
+          <div>
+            <div class="principle-title">Practical Innovation</div>
+            <div class="principle-text">Advanced methods are powerful only when applied in ways that fit your team's needs and resources.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="principle-num">03</div>
+          <div>
+            <div class="principle-title">Collaboration First</div>
+            <div class="principle-text">We work side-by-side with your team, tailoring models that integrate into your day-to-day operations.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="principle-num">04</div>
+          <div>
+            <div class="principle-title">Integrity & Impact</div>
+            <div class="principle-text">Every recommendation is grounded in integrity and designed to drive real impact for your business.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="section-label">// Let's Talk</div>
+    <h2>Ready to put your data to work?</h2>
+    <p>Whether you're starting from scratch or looking to upgrade existing analytics, we'd love to learn about your institution and explore how we can help.</p>
+    <div class="cta-actions">
+      <a href="https://www.rhodequantlabs.com/contact" class="btn-primary">Get In Touch</a>
+      <a href="https://alco-commentary.rhodequantlabs.com" target="_blank" class="btn-secondary">Try the ALCO Tool</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">Rhode<span>Quant</span> Labs</a>
+  <div class="footer-text">© 2025 RhodeQuant Labs</div>
+</footer>
+
+<script>
+  // Cursor dot
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX - 3 + 'px';
+    cursor.style.top  = e.clientY - 3 + 'px';
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
